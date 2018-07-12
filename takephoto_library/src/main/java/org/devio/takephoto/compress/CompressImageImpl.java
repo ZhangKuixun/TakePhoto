@@ -23,12 +23,8 @@ public class CompressImageImpl implements CompressImage {
     private CompressImage.CompressListener listener;
 
     public static CompressImage of(Context context, CompressConfig config, ArrayList<TImage> images,
-        CompressImage.CompressListener listener) {
-        if (config.getLubanOptions() != null) {
-            return new CompressWithLuBan(context, config, images, listener);
-        } else {
-            return new CompressImageImpl(context, config, images, listener);
-        }
+                                   CompressImage.CompressListener listener) {
+        return new CompressImageImpl(context, config, images, listener);
     }
 
     private CompressImageImpl(Context context, CompressConfig config, ArrayList<TImage> images, CompressImage.CompressListener listener) {
