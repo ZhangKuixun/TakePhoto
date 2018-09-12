@@ -20,3 +20,21 @@ allprojects {
         google()
     }
 }
+ext {
+    min_sdk_version = 14
+    target_sdk_version = 28
+    compile_sdk_version = 28
+    build_tools_version = "27.0.3"
+
+    version_code = 1
+    version_name = "1.0.0"
+
+    support_library_version = "27.1.1"
+
+    var = [
+            // for application
+            SupportDesign : "com.android.support:design:$support_library_version",
+            SupportV7     : "com.android.support:appcompat-v7:$support_library_version",
+            RecyclerviewV7: "com.android.support:recyclerview-v7:$support_library_version"
+    ]
+}

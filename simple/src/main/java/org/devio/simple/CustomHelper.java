@@ -38,7 +38,7 @@ import java.io.File;
 public class CustomHelper {
     private View rootView;
     private RadioGroup rgCrop, rgCompress, rgFrom, rgCropSize, rgCropTool, rgShowProgressBar, rgPickTool, rgCompressTool, rgCorrectTool,
-        rgRawFile;
+            rgRawFile;
     private EditText etCropHeight, etCropWidth, etLimit, etSize, etHeightPx, etWidthPx;
 
     public static CustomHelper of(View rootView) {
@@ -51,28 +51,25 @@ public class CustomHelper {
     }
 
     private void init() {
-        rgCrop = (RadioGroup) rootView.findViewById(R.id.rgCrop);
-        rgCompress = (RadioGroup) rootView.findViewById(R.id.rgCompress);
-        rgCompressTool = (RadioGroup) rootView.findViewById(R.id.rgCompressTool);
-        rgCropSize = (RadioGroup) rootView.findViewById(R.id.rgCropSize);
-        rgFrom = (RadioGroup) rootView.findViewById(R.id.rgFrom);
-        rgPickTool = (RadioGroup) rootView.findViewById(R.id.rgPickTool);
-        rgRawFile = (RadioGroup) rootView.findViewById(R.id.rgRawFile);
-        rgCorrectTool = (RadioGroup) rootView.findViewById(R.id.rgCorrectTool);
-        rgShowProgressBar = (RadioGroup) rootView.findViewById(R.id.rgShowProgressBar);
-        rgCropTool = (RadioGroup) rootView.findViewById(R.id.rgCropTool);
-        etCropHeight = (EditText) rootView.findViewById(R.id.etCropHeight);
-        etCropWidth = (EditText) rootView.findViewById(R.id.etCropWidth);
-        etLimit = (EditText) rootView.findViewById(R.id.etLimit);
-        etSize = (EditText) rootView.findViewById(R.id.etSize);
-        etHeightPx = (EditText) rootView.findViewById(R.id.etHeightPx);
-        etWidthPx = (EditText) rootView.findViewById(R.id.etWidthPx);
-
-
-
+        rgCrop = rootView.findViewById(R.id.rgCrop);
+        rgCompress = rootView.findViewById(R.id.rgCompress);
+        rgCompressTool = rootView.findViewById(R.id.rgCompressTool);
+        rgCropSize = rootView.findViewById(R.id.rgCropSize);
+        rgFrom = rootView.findViewById(R.id.rgFrom);
+        rgPickTool = rootView.findViewById(R.id.rgPickTool);
+        rgRawFile = rootView.findViewById(R.id.rgRawFile);
+        rgCorrectTool = rootView.findViewById(R.id.rgCorrectTool);
+        rgShowProgressBar = rootView.findViewById(R.id.rgShowProgressBar);
+        rgCropTool = rootView.findViewById(R.id.rgCropTool);
+        etCropHeight = rootView.findViewById(R.id.etCropHeight);
+        etCropWidth = rootView.findViewById(R.id.etCropWidth);
+        etLimit = rootView.findViewById(R.id.etLimit);
+        etSize = rootView.findViewById(R.id.etSize);
+        etHeightPx = rootView.findViewById(R.id.etHeightPx);
+        etWidthPx = rootView.findViewById(R.id.etWidthPx);
     }
 
-    public void onClick(View view, TakePhoto takePhoto) {
+    void onClick(View view, TakePhoto takePhoto) {
         File file = new File(Environment.getExternalStorageDirectory(), "/temp/" + System.currentTimeMillis() + ".jpg");
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -82,7 +79,7 @@ public class CustomHelper {
         configCompress(takePhoto);
         configTakePhotoOption(takePhoto);
         switch (view.getId()) {
-            case R.id.btnPickBySelect:
+            case R.id.btnPickBySelect://相册
                 int limit = Integer.parseInt(etLimit.getText().toString());
                 if (limit > 1) {
                     if (rgCrop.getCheckedRadioButtonId() == R.id.rbCropYes) {
@@ -100,14 +97,14 @@ public class CustomHelper {
                     }
                     return;
                 } else {
-                    if (rgCrop.getCheckedRadioButtonId() == R.id.rbCropYes) {
+                    if (rgCrop.getCheckedRadioButtonId() == R.id.rbCropYes) {//是否裁切
                         takePhoto.onPickFromGalleryWithCrop(imageUri, getCropOptions());
                     } else {
                         takePhoto.onPickFromGallery();
                     }
                 }
                 break;
-            case R.id.btnPickByTake:
+            case R.id.btnPickByTake://拍照
                 if (rgCrop.getCheckedRadioButtonId() == R.id.rbCropYes) {
                     takePhoto.onPickFromCaptureWithCrop(imageUri, getCropOptions());
                 } else {
@@ -121,10 +118,10 @@ public class CustomHelper {
 
     private void configTakePhotoOption(TakePhoto takePhoto) {
         TakePhotoOptions.Builder builder = new TakePhotoOptions.Builder();
-        if (rgPickTool.getCheckedRadioButtonId() == R.id.rbPickWithOwn) {
+        if (rgPickTool.getCheckedRadioButtonId() == R.id.rbPickWithOwn) {//使用TakePhoto自带相册
             builder.setWithOwnGallery(true);
         }
-        if (rgCorrectTool.getCheckedRadioButtonId() == R.id.rbCorrectYes) {
+        if (rgCorrectTool.getCheckedRadioButtonId() == R.id.rbCorrectYes) {//纠正拍照的照片旋转角度
             builder.setCorrectImage(true);
         }
         takePhoto.setTakePhotoOptions(builder.create());
@@ -132,21 +129,21 @@ public class CustomHelper {
     }
 
     private void configCompress(TakePhoto takePhoto) {
-        if (rgCompress.getCheckedRadioButtonId() != R.id.rbCompressYes) {
+        if (rgCompress.getCheckedRadioButtonId() != R.id.rbCompressYes) {//是否压缩
             takePhoto.onEnableCompress(null, false);
             return;
         }
         int maxSize = Integer.parseInt(etSize.getText().toString());
         int width = Integer.parseInt(etCropWidth.getText().toString());
         int height = Integer.parseInt(etHeightPx.getText().toString());
-        boolean showProgressBar = rgShowProgressBar.getCheckedRadioButtonId() == R.id.rbShowYes ? true : false;
-        boolean enableRawFile = rgRawFile.getCheckedRadioButtonId() == R.id.rbRawYes ? true : false;
+        boolean showProgressBar = rgShowProgressBar.getCheckedRadioButtonId() == R.id.rbShowYes;//显示压缩进度条
+        boolean enableRawFile = rgRawFile.getCheckedRadioButtonId() == R.id.rbRawYes;//拍照压缩后是否保存原图
         CompressConfig config;
-        if (rgCompressTool.getCheckedRadioButtonId() == R.id.rbCompressWithOwn) {
+        if (rgCompressTool.getCheckedRadioButtonId() == R.id.rbCompressWithOwn) {//压缩工具
             config = new CompressConfig.Builder().setMaxSize(maxSize)
-                .setMaxPixel(width >= height ? width : height)
-                .enableReserveRaw(enableRawFile)
-                .create();
+                    .setMaxPixel(width >= height ? width : height)
+                    .enableReserveRaw(enableRawFile)
+                    .create();
         } else {
             LubanOptions option = new LubanOptions.Builder().setMaxHeight(height).setMaxWidth(width).setMaxSize(maxSize).create();
             config = CompressConfig.ofLuban(option);
@@ -163,7 +160,7 @@ public class CustomHelper {
         }
         int height = Integer.parseInt(etCropHeight.getText().toString());
         int width = Integer.parseInt(etCropWidth.getText().toString());
-        boolean withWonCrop = rgCropTool.getCheckedRadioButtonId() == R.id.rbCropOwn ? true : false;
+        boolean withWonCrop = rgCropTool.getCheckedRadioButtonId() == R.id.rbCropOwn;
 
         CropOptions.Builder builder = new CropOptions.Builder();
 
