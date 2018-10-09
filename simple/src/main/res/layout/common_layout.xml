@@ -284,7 +284,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:minWidth="42dp"
-                    android:text="102400" />
+                    android:text="204800" />
 
                 <TextView
                     android:layout_width="wrap_content"
